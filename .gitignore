@@ -16,6 +16,9 @@
 !/log/.keep
 /tmp
 
+# Ignore rspec
+.rspec
+
 # Extra files
 doc/
 *.swp
