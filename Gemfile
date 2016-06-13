@@ -23,6 +23,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rspec-example_steps'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
 end
 
 group :development do
