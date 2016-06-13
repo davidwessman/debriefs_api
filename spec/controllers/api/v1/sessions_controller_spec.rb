@@ -39,4 +39,14 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    it 'returns 204' do
+      user = create(:user)
+      sign_in(user)
+      delete(:destroy, id: user.auth_token)
+
+      is_expected.to(respond_with(204))
+    end
+  end
 end
