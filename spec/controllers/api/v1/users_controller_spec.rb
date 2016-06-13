@@ -1,5 +1,4 @@
 require 'rails_helper'
-
 RSpec.describe Api::V1::UsersController, type: :controller do
   before(:each) do
     request.headers['Accept'] = 'application/vnd.notify.v1'
@@ -10,7 +9,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       user = create(:user, email: 'david@notify.dev')
       get(:show, id: user.to_param, format: :json)
 
-      user_response = JSON.parse(response.body, symbolize_names: true)
+      user_response = json_response
       expect(user_response[:email]).to eq('david@notify.dev')
     end
 
@@ -30,7 +29,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                       password_confirmation: '12345678'}
         post(:create, user: attributes, format: :json)
 
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eq('david@notify.dev')
       end
 
@@ -51,7 +50,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                       password_confirmation: '12345678'}
         post(:create, user: attributes, format: :json)
 
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response).to have_key(:errors)
         expect(user_response[:errors][:email]).to include("can't be blank")
       end
@@ -75,7 +74,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                        user: { email: 'arthur@notify.dev' },
                        format: :json)
 
-       user_response = JSON.parse(response.body, symbolize_names: true)
+       user_response = json_response
        expect(user_response[:email]).to eq('arthur@notify.dev')
       end
 
@@ -96,7 +95,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                        user: { email: '' },
                        format: :json)
 
-       user_response = JSON.parse(response.body, symbolize_names: true)
+       user_response = json_response
        expect(user_response).to have_key(:errors)
        expect(user_response[:errors][:email]).to include("can't be blank")
       end

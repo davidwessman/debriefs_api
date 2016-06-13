@@ -32,6 +32,8 @@ RSpec.configure do |config|
   config.after(:each) do
     Warden.test_reset!
   end
+
+  config.include Request::JsonHelpers, type: :controller
 end
 
 Shoulda::Matchers.configure do |config|
