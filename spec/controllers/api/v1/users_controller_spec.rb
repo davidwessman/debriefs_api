@@ -111,4 +111,13 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    it 'responds with 204' do
+      user = create(:user)
+      delete(:destroy, id: user.to_param, format: :json)
+
+      is_expected.to(respond_with(204))
+    end
+  end
 end
