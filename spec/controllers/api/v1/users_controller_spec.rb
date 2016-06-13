@@ -1,12 +1,5 @@
 require 'rails_helper'
 RSpec.describe Api::V1::UsersController, type: :controller do
-  before(:each) do
-    request.headers['Accept'] = "application/vnd.notify.v1, #{Mime::JSON}"
-  end
-
-  before(:each) do
-    request.headers['Content-Type'] = Mime::JSON.to_s
-  end
 
   describe 'GET #show' do
     it 'returns the information about a reporter on a hash' do
