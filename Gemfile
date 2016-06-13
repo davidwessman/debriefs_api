@@ -17,7 +17,7 @@ group :development, :test do
   gem 'capybara'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
-  gem 'i18n-tasks'
+  gem 'ffaker'
   gem 'poltergeist'
   gem 'pry-byebug'
   gem 'pry-rails'
