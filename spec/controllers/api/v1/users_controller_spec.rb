@@ -1,13 +1,17 @@
 require 'rails_helper'
 RSpec.describe Api::V1::UsersController, type: :controller do
   before(:each) do
-    request.headers['Accept'] = 'application/vnd.notify.v1'
+    request.headers['Accept'] = "application/vnd.notify.v1, #{Mime::JSON}"
+  end
+
+  before(:each) do
+    request.headers['Content-Type'] = Mime::JSON.to_s
   end
 
   describe 'GET #show' do
     it 'returns the information about a reporter on a hash' do
       user = create(:user, email: 'david@notify.dev')
-      get(:show, id: user.to_param, format: :json)
+      get(:show, id: user.to_param)
 
       user_response = json_response
       expect(user_response[:email]).to eq('david@notify.dev')
@@ -15,7 +19,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
     it 'responds with 200' do
       user = create(:user, email: 'david@notify.dev')
-      get(:show, id: user.to_param, format: :json)
+      get(:show, id: user.to_param)
 
       is_expected.to(respond_with(200))
     end
@@ -27,7 +31,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         attributes = {email: 'david@notify.dev',
                       password: '12345678',
                       password_confirmation: '12345678'}
-        post(:create, user: attributes, format: :json)
+        post(:create, user: attributes)
 
         user_response = json_response
         expect(user_response[:email]).to eq('david@notify.dev')
@@ -37,7 +41,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         attributes = {email: 'david@notify.dev',
                       password: '12345678',
                       password_confirmation: '12345678'}
-        post(:create, user: attributes, format: :json)
+        post(:create, user: attributes)
 
         is_expected.to(respond_with(201))
       end
@@ -48,7 +52,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         attributes = {email: '',
                       password: '12345678',
                       password_confirmation: '12345678'}
-        post(:create, user: attributes, format: :json)
+        post(:create, user: attributes)
 
         user_response = json_response
         expect(user_response).to have_key(:errors)
@@ -59,7 +63,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         attributes = {email: '',
                       password: '12345678',
                       password_confirmation: '12345678'}
-        post(:create, user: attributes, format: :json)
+        post(:create, user: attributes)
 
         is_expected.to(respond_with(422))
       end
@@ -71,8 +75,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'renders json represenation of updated user' do
         user = create(:user, email: 'david@notify.dev')
         patch(:update, id: user.to_param,
-                       user: { email: 'arthur@notify.dev' },
-                       format: :json)
+                       user: { email: 'arthur@notify.dev' })
 
        user_response = json_response
        expect(user_response[:email]).to eq('arthur@notify.dev')
@@ -81,8 +84,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'responds with 200' do
         user = create(:user, email: 'david@notify.dev')
         patch(:update, id: user.to_param,
-                       user: { email: 'arthur@notify.dev' },
-                       format: :json)
+                       user: { email: 'arthur@notify.dev' })
 
         is_expected.to(respond_with(200))
       end
@@ -92,8 +94,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'renders and errors json' do
         user = create(:user, email: 'david@notify.dev')
         patch(:update, id: user.to_param,
-                       user: { email: '' },
-                       format: :json)
+                       user: { email: '' })
 
        user_response = json_response
        expect(user_response).to have_key(:errors)
@@ -103,8 +104,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'responds with 422' do
         user = create(:user, email: 'david@notify.dev')
         patch(:update, id: user.to_param,
-                       user: { email: '' },
-                       format: :json)
+                       user: { email: '' })
 
         is_expected.to(respond_with(422))
       end
@@ -114,7 +114,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe 'DELETE #destroy' do
     it 'responds with 204' do
       user = create(:user)
-      delete(:destroy, id: user.to_param, format: :json)
+      delete(:destroy, id: user.to_param)
 
       is_expected.to(respond_with(204))
     end
