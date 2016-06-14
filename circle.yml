@@ -1,0 +1,7 @@
+machine:
+  ruby:
+    version: 2.3.0
+
+database:
+  override:
+    - bundle exec rake db:create db:migrate --trace

@@ -19,7 +19,15 @@ gem 'furatto'
 gem 'font-awesome-rails'
 gem 'simple_form'
 
+group :production do
+  gem 'puma'
+  gem 'rails_12factor'
+  gem 'therubyracer', platform: :ruby
+end
+
 group :development, :test do
+  # For API testing
+
   gem 'better_errors'
   gem 'bullet'
   gem 'capybara'
