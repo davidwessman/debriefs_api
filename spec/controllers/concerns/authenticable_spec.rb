@@ -43,4 +43,23 @@ describe Authenticable do
       is_expected.to(respond_with(401))
     end
   end
+
+  describe '#user_signed_in?' do
+    context 'when there is user on session' do
+      it 'expects true from user_signed_in' do
+        user = build_stubbed(:user)
+        allow(authentication).to receive(:current_user) { user }
+
+        expect(authentication.user_signed_in?).to be_truthy
+      end
+    end
+
+    context 'when there is no user on session' do
+      it 'expects false from user_signed_in' do
+        allow(authentication).to receive(:current_user) { nil }
+
+        expect(authentication.user_signed_in?).to be_falsey
+      end
+    end
+  end
 end
