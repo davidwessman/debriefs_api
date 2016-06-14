@@ -11,10 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160613164056) do
+ActiveRecord::Schema.define(version: 20160614081333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "providers", force: :cascade do |t|
+    t.string   "title",       default: "",    null: false
+    t.string   "url",         default: "",    null: false
+    t.boolean  "active",      default: false, null: false
+    t.text     "description"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "provider_id"
+    t.boolean  "active",      default: true, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "subscriptions", ["provider_id"], name: "index_subscriptions_on_provider_id", using: :btree
+  add_index "subscriptions", ["user_id", "provider_id"], name: "index_subscriptions_on_user_id_and_provider_id", unique: true, using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -36,4 +57,6 @@ ActiveRecord::Schema.define(version: 20160613164056) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "subscriptions", "providers"
+  add_foreign_key "subscriptions", "users"
 end
