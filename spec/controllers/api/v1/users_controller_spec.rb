@@ -67,6 +67,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context 'successfully updated' do
       it 'renders json represenation of updated user' do
         user = create(:user, email: 'david@notify.dev')
+        api_authorization_header(user.auth_token)
         patch(:update, id: user.to_param,
                        user: { email: 'arthur@notify.dev' })
 
@@ -76,6 +77,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       it 'responds with 200' do
         user = create(:user, email: 'david@notify.dev')
+        api_authorization_header(user.auth_token)
         patch(:update, id: user.to_param,
                        user: { email: 'arthur@notify.dev' })
 
@@ -86,6 +88,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context 'not updated' do
       it 'renders and errors json' do
         user = create(:user, email: 'david@notify.dev')
+        api_authorization_header(user.auth_token)
         patch(:update, id: user.to_param,
                        user: { email: '' })
 
@@ -96,6 +99,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       it 'responds with 422' do
         user = create(:user, email: 'david@notify.dev')
+        api_authorization_header(user.auth_token)
         patch(:update, id: user.to_param,
                        user: { email: '' })
 
@@ -106,7 +110,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
   describe 'DELETE #destroy' do
     it 'responds with 204' do
-      user = create(:user)
+      user = create(:user, auth_token: 'sounique')
+      api_authorization_header(user.auth_token)
       delete(:destroy, id: user.to_param)
 
       is_expected.to(respond_with(204))
